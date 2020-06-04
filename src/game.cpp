@@ -5,8 +5,8 @@
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake(grid_width, grid_height),
       engine(dev()),
-      random_w(0, static_cast<int>(grid_width)),
-      random_h(0, static_cast<int>(grid_height)) {
+      random_w(0, static_cast<int>(grid_width - 1)),
+      random_h(0, static_cast<int>(grid_height - 1)) {
   PlaceFood();
 }
 
@@ -72,7 +72,8 @@ void Game::PlaceFood() {
 void Game::Update() {
   if (!snake.alive) return;
 
-  snake.Update(delta_time);
+  snake.SetDeltaTime(delta_time);
+  snake.Update();
 
   int new_x = static_cast<int>(snake.head_x);
   int new_y = static_cast<int>(snake.head_y);
