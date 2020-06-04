@@ -14,8 +14,9 @@ class Snake {
         head_x(grid_width / 2),
         head_y(grid_height / 2) {}
 
-  void Update(float const delta_time);
-
+  void Update();
+  // Should be called before Update to ensure movement is updated accurately.
+  void SetDeltaTime(float const delta_time);
   void GrowBody();
   bool SnakeCell(int x, int y);
 

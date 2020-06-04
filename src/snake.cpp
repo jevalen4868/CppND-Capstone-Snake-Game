@@ -2,7 +2,11 @@
 #include <cmath>
 #include <iostream>
 
-void Snake::Update(float const delta_time) {
+void Snake::SetDeltaTime(const float delta_time) {
+  this->delta_time = delta_time;
+}
+
+void Snake::Update() {
   this->delta_time = delta_time;
   SDL_Point prev_cell{
       static_cast<int>(head_x),
