@@ -2,7 +2,8 @@
 #include <cmath>
 #include <iostream>
 
-void Snake::Update() {
+void Snake::Update(float const delta_time) {
+  this->delta_time = delta_time;
   SDL_Point prev_cell{
       static_cast<int>(head_x),
       static_cast<int>(
@@ -22,19 +23,19 @@ void Snake::Update() {
 void Snake::UpdateHead() {
   switch (direction) {
     case Direction::kUp:
-      head_y -= speed;
+      head_y -= speed * delta_time;
       break;
 
     case Direction::kDown:
-      head_y += speed;
+      head_y += speed * delta_time;
       break;
 
     case Direction::kLeft:
-      head_x -= speed;
+      head_x -= speed * delta_time;
       break;
 
     case Direction::kRight:
-      head_x += speed;
+      head_x += speed * delta_time;
       break;
   }
 

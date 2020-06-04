@@ -13,13 +13,24 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
 void Game::Run(Controller const &controller, Renderer &renderer,
                std::size_t target_frame_duration) {
   Uint32 title_timestamp = SDL_GetTicks();
-  Uint32 frame_start;
+  Uint32 frame_start = SDL_GetTicks();
   Uint32 frame_end;
   Uint32 frame_duration;
   int frame_count = 0;
   bool running = true;
 
   while (running) {
+
+    // ~60 fps
+    while (!SDL_TICKS_PASSED(SDL_GetTicks(), frame_start + 16)) {
+      SDL_Delay(1);
+    };
+
+    delta_time = (SDL_GetTicks() - frame_start) / 1000.0f;
+    if(delta_time > 0.05f) {
+      delta_time = 0.05f;
+    }
+
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
@@ -39,13 +50,6 @@ void Game::Run(Controller const &controller, Renderer &renderer,
       renderer.UpdateWindowTitle(score, frame_count);
       frame_count = 0;
       title_timestamp = frame_end;
-    }
-
-    // If the time for this frame is too small (i.e. frame_duration is
-    // smaller than the target ms_per_frame), delay the loop to
-    // achieve the correct frame rate.
-    if (frame_duration < target_frame_duration) {
-      SDL_Delay(target_frame_duration - frame_duration);
     }
   }
 }
@@ -68,7 +72,7 @@ void Game::PlaceFood() {
 void Game::Update() {
   if (!snake.alive) return;
 
-  snake.Update();
+  snake.Update(delta_time);
 
   int new_x = static_cast<int>(snake.head_x);
   int new_y = static_cast<int>(snake.head_y);
@@ -79,7 +83,7 @@ void Game::Update() {
     PlaceFood();
     // Grow snake and increase speed.
     snake.GrowBody();
-    snake.speed += 0.02;
+    snake.speed += 0.44f;
   }
 }
 

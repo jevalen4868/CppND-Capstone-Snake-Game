@@ -25,6 +25,7 @@ class Game {
   std::uniform_int_distribution<int> random_h;
 
   int score{0};
+  float delta_time{0.0f};
 
   void PlaceFood();
   void Update();
